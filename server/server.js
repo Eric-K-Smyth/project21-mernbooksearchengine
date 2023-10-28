@@ -2,7 +2,8 @@ const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
 const db = require('./config/connection');
-const { typeDefs, resolvers } = require('./Schemas');
+const { typeDefs, resolvers } = require('./schemas'); // Make sure you import your typeDefs and resolvers
+const { authMiddleware } = require('./utils/auth'); // Import the authMiddleware
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,6 +20,7 @@ if (process.env.NODE_ENV === 'production') {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => ({ req, ...authMiddleware(req) }), // Provide authMiddleware in the context
 });
 
 server.applyMiddleware({ app });
