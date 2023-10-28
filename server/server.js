@@ -20,7 +20,10 @@ if (process.env.NODE_ENV === 'production') {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ req, ...authMiddleware(req) }), // Provide authMiddleware in the context
+  context: ({ req }) => ({
+    req,
+    ...authMiddleware(req),
+  }),
 });
 
 server.applyMiddleware({ app });
