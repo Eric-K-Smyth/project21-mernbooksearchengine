@@ -7,6 +7,12 @@ class AuthService {
   getProfile() {
     return decode(this.getToken());
   }
+  // Method to retrieve saved book IDs from user's profile data
+getSavedBookIds() {
+  const profile = this.getProfile();
+  return profile.savedBooks.map((book) => book.bookId);
+}
+
 
   // check if user's logged in
   loggedIn() {
