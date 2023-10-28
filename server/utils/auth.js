@@ -2,7 +2,17 @@ const { AuthenticationError } = require('apollo-server-express');
 const jwt = require('jsonwebtoken');
 
 const secret = 'mysecretssshhhhhhh';
+const signToken = (user) => {
+  const payload = {
+    id: user.id,
+    email: user.email, // Include any user-specific data needed in the token
+  };
 
+  // Sign the token
+  return jwt.sign(payload, secret, {
+    expiresIn: '10h', // Set the token expiration time (e.g., 1 hour)
+  });
+};
 
 const verifyToken = (token) => {
   try {
@@ -32,5 +42,5 @@ const authMiddleware = (context) => {
   throw new AuthenticationError('You are not authenticated!');
 };
 
-module.exports = { authMiddleware };
+module.exports = { authMiddleware, signToken };
 

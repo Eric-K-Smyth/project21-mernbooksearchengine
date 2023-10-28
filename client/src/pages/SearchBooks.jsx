@@ -60,16 +60,23 @@ const SearchBooks = () => {
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+  
     if (!token) {
       return false;
     }
-
+  
     try {
       const { data } = await saveBookMutation({
-        variables: { input: bookToSave },
+        variables: {
+          bookId: bookToSave.bookId,
+          authors: bookToSave.authors,
+          description: bookToSave.description,
+          title: bookToSave.title,
+          image: bookToSave.image,
+          link: 'The link field' // You need to specify an actual value for 'link' or use a placeholder value
+        },
       });
-
+  
       if (data) {
         setSavedBookIds([...savedBookIds, bookToSave.bookId]);
       }
@@ -77,6 +84,7 @@ const SearchBooks = () => {
       console.error(err);
     }
   };
+  
 
   return (
     <>
