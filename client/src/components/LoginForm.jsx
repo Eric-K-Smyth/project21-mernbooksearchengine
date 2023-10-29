@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from '../utils/mutations'; // Import your GraphQL mutation for user login
+import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
-  // Define state for user form data and alerts
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  // Define the LOGIN_USER mutation using useMutation hook
-  const [loginUser] = useMutation(LOGIN_USER);
+  const [loginUser] = useMutation(LOGIN_USER, {
+    context: {
+      headers: {
+        authorization: Auth.getToken() ? `Bearer ${Auth.getToken()}` : '',
+      },
+    },
+  });
 
-  // Handle form input changes
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
 
-  // Handle form submission
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // Validate the form
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -41,7 +42,6 @@ const LoginForm = () => {
       setShowAlert(true);
     }
 
-    // Reset the form data
     setUserFormData({
       email: '',
       password: '',

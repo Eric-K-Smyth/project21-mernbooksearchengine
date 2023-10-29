@@ -35,7 +35,18 @@ getSavedBookIds() {
 
   getToken() {
     // Retrieves the user token from localStorage
-    return localStorage.getItem('id_token');
+    const token = localStorage.getItem('id_token');
+    console.log('Token:', token);
+  
+    if (!token) {
+      console.log('No token found in local storage.');
+      return null; // Return null when there's no token
+    }
+  
+    const decodedPayload = decode(token);
+   // console.log('Decoded Payload:', decodedPayload);
+  
+    return token; // Return the token after logging
   }
 
   login(idToken) {

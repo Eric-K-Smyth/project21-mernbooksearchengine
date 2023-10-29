@@ -28,3 +28,14 @@ export const removeBookId = (bookId) => {
 
   return true;
 };
+export const getAuthToken = () => {
+  return localStorage.getItem('token') || null;
+};
+
+export const setAuthToken = (token) => {
+  localStorage.setItem('token', token);
+};
+
+export const removeAuthToken = () => {
+  localStorage.removeItem('token');
+};

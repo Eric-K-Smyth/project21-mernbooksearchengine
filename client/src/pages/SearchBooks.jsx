@@ -10,7 +10,7 @@ import {
 
 import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';
-import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
+import { getSavedBookIds, saveBookIds, removeBookId } from '../utils/localStorage';
 
 import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
@@ -59,12 +59,8 @@ const SearchBooks = () => {
 
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-  
-    if (!token) {
-      return false;
-    }
-  
+    const token = Auth.getToken();
+     // console.log('Token:', token);
     try {
       const { data } = await saveBookMutation({
         variables: {
@@ -76,7 +72,7 @@ const SearchBooks = () => {
           link: 'The link field' // You need to specify an actual value for 'link' or use a placeholder value
         },
       });
-  
+      
       if (data) {
         setSavedBookIds([...savedBookIds, bookToSave.bookId]);
       }
