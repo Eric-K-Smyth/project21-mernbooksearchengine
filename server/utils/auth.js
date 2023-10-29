@@ -20,9 +20,9 @@ const signToken = (user) => {
 
 const verifyToken = (token) => {
   try {
-    const { data } = jwt.verify(token, secret);
-    console.log('Decoded Data:', data); // Log the decoded data
-    return data;
+    const { id, email } = jwt.verify(token, secret);
+    console.log('Decoded Data:', { id, email }); // Log the decoded data
+    return { id, email };
   } catch (err) {
     console.error('Error verifying token:', err); // Log the error
     throw new AuthenticationError('Invalid token');

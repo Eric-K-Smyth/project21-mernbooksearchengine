@@ -9,15 +9,12 @@ import Navbar from './components/Navbar';
 import Auth from './utils/auth'; // Import your Auth module
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3001/graphql',
+  uri: '/graphql',
 });
 
 // Create a custom auth link
 const authLink = setContext((_, { headers }) => {
   const token = Auth.getToken(); // Use Auth to get the token from local storage
-  console.log('Token from Auth.getToken():', token);
-  
-
 
   return {
     headers: {
